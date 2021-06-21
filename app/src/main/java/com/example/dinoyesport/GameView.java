@@ -3,6 +3,7 @@ package com.example.dinoyesport;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -10,10 +11,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public MainThread thread;
     public Dino dino;
     public Map ground;
+    int m_iFrameNb;
+    BitmapBank bitmapBank;
+    MainActivity mainActivity;
+    private Display current_screen;
 
-    public GameView(Context context) {
-        super(context);
+    public GameView(MainActivity mainActivity) {
+        super(mainActivity);
 
+        this.mainActivity = mainActivity;
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(),this);
         setFocusable(true);
@@ -26,11 +32,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        dino = new Dino(BitmapFactory.decodeResource(getResources(), R.drawable.hell));
+        bitmapBank = new BitmapBank(this.mainActivity);
+        dino = new Dino(bitmapBank);
         ground = new Map(BitmapFactory.decodeResource(getResources(), R.drawable.ground));
-        if (dino.isDead == 0){
-            dino = new Dino(BitmapFactory.decodeResource(getResources(), R.drawable.belowrightup));
-        }
 
         thread.setRunning(true);
         thread.start();
@@ -50,8 +54,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void update() {
-
+    public boolean update() {
+        this.dino.update();
+        return true;
     }
 
     @Override
