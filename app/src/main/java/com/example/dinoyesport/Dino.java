@@ -2,7 +2,6 @@ package com.example.dinoyesport;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import com.example.dinoyesport.MainActivity;
 import android.util.Log;
 
 /**
@@ -17,7 +16,7 @@ public class Dino {
     Bitmap image;
     BitmapBank bitmapBank;
     float y ;
-    int isDead;
+    boolean isDead;
     boolean running;
     boolean jumping;
     int m_iFrameNb;
@@ -25,7 +24,7 @@ public class Dino {
     float m_fJumpingTime;
 
     public Dino(BitmapBank bitmapBank, MainActivity mainActivity) {
-        isDead = 0;
+        isDead = false;
         m_iFrameNb= 0;
         this.mainActivity = mainActivity;
         this.bitmapBank = bitmapBank;
@@ -98,6 +97,14 @@ public class Dino {
 
     public void setM_iYVelocity(float p_iYVelocity) {
         this.m_iYVelocity = p_iYVelocity;
+    }
+
+    public boolean get_isDead() {
+        return isDead;
+    }
+
+    public void set_isDead(boolean p_bIsDead) {
+         this.isDead = p_bIsDead;
     }
 
     public boolean get_Running() { return running; }

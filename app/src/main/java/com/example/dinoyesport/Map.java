@@ -13,10 +13,8 @@ public class Map {
      */
     private Bitmap image;
 
-
-
-    public Map(Bitmap bmp) {
-        image = bmp;
+    public Map(BitmapBank bitmapBank, MainActivity mainActivity) {
+        image = bitmapBank.getGroundSprite();
     }
 
     public void draw(Canvas canvas) {

@@ -9,6 +9,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public MainThread thread;
     public Dino dino;
     public Map ground;
+    public Sun sun;
+    public Obstacle obstacle;
     BitmapBank bitmapBank;
     MainActivity mainActivity;
 
@@ -30,7 +32,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         bitmapBank = new BitmapBank(this.mainActivity);
         dino = new Dino(bitmapBank, this.mainActivity);
-        ground = new Map(BitmapFactory.decodeResource(getResources(), R.drawable.ground));
+        ground = new Map(bitmapBank, this.mainActivity);
+        sun = new Sun(bitmapBank, this.mainActivity);
+        obstacle = new Obstacle(bitmapBank, this.mainActivity);
+
 
         thread.setRunning(true);
         thread.start();
@@ -64,5 +69,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         dino.draw(canvas);
         ground.draw(canvas);
+        sun.draw(canvas);
+        obstacle.draw(canvas);
     }
 }
