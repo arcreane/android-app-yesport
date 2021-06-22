@@ -47,11 +47,7 @@ public class MainThread extends Thread {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch(event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            if(gameView.getDino().get_Running() != true) {
-                                gameView.getDino().set_Running(true);
-                                gameView.getDino().setM_iYVelocity(gameView.getDino().getM_iYVelocity()+Commons.DINO_MAX_VERTICAL_VELOCITY);
-                            }
-                            else if (gameView.getDino().getM_iYVelocity()< Commons.DINO_MAX_VERTICAL_VELOCITY) {
+                             if (gameView.getDino().getM_iYVelocity()< Commons.DINO_MAX_VERTICAL_VELOCITY) {
                                 gameView.getDino().setM_iYVelocity(gameView.getDino().getM_iYVelocity()+Commons.DINO_MAX_VERTICAL_VELOCITY);
                             }
                             gameView.getDino().set_Jumping(true);

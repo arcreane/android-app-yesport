@@ -17,20 +17,20 @@ public class BitmapBank {
         //get all the user sprites
         options = new BitmapFactory.Options();
         options.inScaled = false;
-        spriteSheet = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.hell, options);
+        spriteSheet = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.dinostand, options);
 
         //Dino sprites
         dinoSpritesList = new HashMap<>();
 
         dinoSpritesList.put(DinoSprites.STANDING, new ArrayList<>());
-        dinoSpritesList.get(DinoSprites.STANDING).add(getScaledExtractedBitmap(mainActivity, BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.hell, options)));
+        dinoSpritesList.get(DinoSprites.STANDING).add(getScaledExtractedBitmap(mainActivity, spriteSheet));
 
         dinoSpritesList.put(DinoSprites.RUNNING, new ArrayList<>());
         dinoSpritesList.get(DinoSprites.RUNNING).add(getScaledExtractedBitmap(mainActivity, BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.dinoleftup, options)));
         dinoSpritesList.get(DinoSprites.RUNNING).add(getScaledExtractedBitmap(mainActivity, BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.dinorightup, options)));
 
         dinoSpritesList.put(DinoSprites.JUMPING, new ArrayList<>());
-        dinoSpritesList.get(DinoSprites.JUMPING).add(getScaledExtractedBitmap(mainActivity, BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.hell, options)));
+        dinoSpritesList.get(DinoSprites.JUMPING).add(getScaledExtractedBitmap(mainActivity, spriteSheet));
 
         dinoSpritesList.put(DinoSprites.DEAD, new ArrayList<>());
         dinoSpritesList.get(DinoSprites.DEAD).add(getScaledExtractedBitmap(mainActivity, BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.dinobigeyes, options)));
