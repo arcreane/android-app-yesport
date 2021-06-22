@@ -3,6 +3,9 @@ package com.example.dinoyesport;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * 
  */
@@ -14,14 +17,25 @@ public class Obstacle {
     float y;
     float x;
 
+    private class CactusImage {
+        Bitmap image;
+        int x;
+    }
+    private int random_obstacle;
+
+    private ArrayList<CactusImage> cactusImageSet;
+
     /**
      * Default constructor
      */
     public Obstacle(BitmapBank bitmapBank, MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.bitmapBank = bitmapBank;
-        image = this.bitmapBank.getObstacleSprite(2);
-        y = 700;
+
+        random_obstacle = (int) (Math.random()*5);
+        image = this.bitmapBank.getObstacleSprite(random_obstacle);
+        if (image.getHeight() == 105) y = 730;
+        else y = 700;
         x = this.mainActivity.getCurrent_screen().getWidth()- 170;
     }
 
