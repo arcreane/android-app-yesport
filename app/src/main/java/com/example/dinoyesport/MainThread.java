@@ -49,7 +49,11 @@ public class MainThread extends Thread {
                         case MotionEvent.ACTION_DOWN:
                              if (gameView.getDino().getM_iYVelocity()< Commons.DINO_MAX_VERTICAL_VELOCITY) {
                                 gameView.getDino().setM_iYVelocity(gameView.getDino().getM_iYVelocity()+Commons.DINO_MAX_VERTICAL_VELOCITY);
-                            }
+                             }
+
+                             if (gameView.get_GameStarted() == false){
+                                 gameView.setGameStarted(true);
+                             }
                             gameView.getDino().set_Jumping(true);
                             break;
                         case MotionEvent.ACTION_UP:

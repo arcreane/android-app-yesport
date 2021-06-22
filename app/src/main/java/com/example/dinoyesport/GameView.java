@@ -10,6 +10,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Dino dino;
     public Map ground;
     public Sun sun;
+    private boolean gameStarted;
     public Obstacle obstacle;
     BitmapBank bitmapBank;
     MainActivity mainActivity;
@@ -30,6 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        gameStarted = false;
         bitmapBank = new BitmapBank(this.mainActivity);
         dino = new Dino(bitmapBank, this.mainActivity);
         ground = new Map(bitmapBank, this.mainActivity);
@@ -57,11 +59,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public boolean update() {
         this.dino.update();
+        this.ground.update();
         return true;
     }
 
     public Dino getDino() {
         return this.dino;
+    }
+
+    public boolean get_GameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
     @Override

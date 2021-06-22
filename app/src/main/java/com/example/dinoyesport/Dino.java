@@ -16,12 +16,12 @@ public class Dino {
     Bitmap image;
     BitmapBank bitmapBank;
     float y ;
-    boolean isDead;
-    boolean running;
-    boolean jumping;
+    private boolean isDead;
+    private boolean running;
+    private boolean jumping;
     int m_iFrameNb;
-    float m_iYVelocity;
-    float m_fJumpingTime;
+    private float m_iYVelocity;
+    private float m_fJumpingTime;
 
     public Dino(BitmapBank bitmapBank, MainActivity mainActivity) {
         isDead = false;
