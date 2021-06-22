@@ -14,12 +14,17 @@ public class Map {
     private Bitmap image;
 
 
+
     public Map(Bitmap bmp) {
         image = bmp;
     }
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(image, 0, 800, null);
+    }
+
+    public void update () {
+
     }
     /**
      * 

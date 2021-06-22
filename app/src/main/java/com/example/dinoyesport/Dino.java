@@ -46,17 +46,18 @@ public class Dino {
 
         if (jumping) {
             this.running = false;
+            image = this.bitmapBank.getFrame(DinoSprites.JUMPING, 0);
             if (y <= 700) {
                 if(y >=0 && this.m_fJumpingTime<Commons.DINO_MAX_JUMP_TIME){
                     this.m_fJumpingTime+=Commons.DINO_JUMP_SPEED;
-                    y = y - (m_iYVelocity * (this.mainActivity.getCurrent_screen().getHeight() / 250))*(-1*((this.m_fJumpingTime - Commons.DINO_MAX_JUMP_TIME)/Commons.MAX_FPS));
+                    y = y - (m_iYVelocity * (this.mainActivity.getCurrent_screen().getHeight() / 208))*(-1*((this.m_fJumpingTime - Commons.DINO_MAX_JUMP_TIME)/Commons.MAX_FPS));
                 }
                 else if(this.m_fJumpingTime == Commons.DINO_MAX_JUMP_TIME){
                     this.m_fJumpingTime+=Commons.DINO_JUMP_SPEED;
                 }
                 else{
                     this.m_fJumpingTime+=Commons.DINO_JUMP_SPEED;
-                    y = y + (m_iYVelocity * (this.mainActivity.getCurrent_screen().getHeight() / 250)) * ((this.m_fJumpingTime - Commons.DINO_MAX_JUMP_TIME)/Commons.MAX_FPS);
+                    y = y + (m_iYVelocity * (this.mainActivity.getCurrent_screen().getHeight() / 208)) * ((this.m_fJumpingTime - Commons.DINO_MAX_JUMP_TIME)/Commons.MAX_FPS);
                 }
                 image = this.bitmapBank.getFrame(DinoSprites.JUMPING, 0);
             }
