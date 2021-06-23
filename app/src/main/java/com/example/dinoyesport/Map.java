@@ -52,7 +52,7 @@ public class Map {
             Iterator<GroundImage> looper = groundImageSet.iterator();
             GroundImage first = looper.next();
 
-            first.x -= 10;
+            first.x -= this.mainActivity.getGameSpeed();
 
             int previousX = first.x;
             while(looper.hasNext()) {

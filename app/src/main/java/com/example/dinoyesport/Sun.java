@@ -34,7 +34,7 @@ public class Sun {
                 y = 150;
             }
             else {
-                x -= 0.5;
+                x -= 0.5 + (this.mainActivity.getGameSpeed()/60);
                 y= y + randomY.get((int) (Math.random()*2));
 
             }
