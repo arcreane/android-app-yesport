@@ -62,6 +62,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.dino.update();
         this.ground.update();
         this.sun.update();
+        this.obstacle.update();
         return true;
     }
 
