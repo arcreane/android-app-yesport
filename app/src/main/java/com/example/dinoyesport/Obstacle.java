@@ -2,6 +2,8 @@ package com.example.dinoyesport;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
@@ -61,6 +63,24 @@ public class Obstacle {
         for(CactusImage img : cactusImageSet) {
             canvas.drawBitmap(img.image,img.x, img.y, null);
         }
+        Paint score = new Paint();
+        score.setStyle(Paint.Style.FILL);
+
+        score.setColor(Color.WHITE);
+        score.setTextSize(60);
+        canvas.drawText("HI " +
+                this.mainActivity.getCurrent_gameView().getHighScore()
+                + " "
+                + this.mainActivity.getCurrent_gameView().getScore(), 50 , 50 , score);
+
+        Paint gameOver = new Paint();
+        gameOver.setStyle(Paint.Style.FILL);
+
+        gameOver.setColor(Color.WHITE);
+        gameOver.setTextSize(90);
+
+        if(this.mainActivity.getCurrent_gameView().isGameOver())
+            canvas.drawText("GAME OVER", (float) (this.mainActivity.getCurrent_screen().getWidth()/2.5), (float) (this.mainActivity.getCurrent_screen().getHeight()/2.5), gameOver);
     }
 
     public void update(){
@@ -93,7 +113,6 @@ public class Obstacle {
     public boolean hasCollided() {
         for(CactusImage ob : cactusImageSet) {
             if(Dino.getDino().intersect(ob.getObstacle())) {
-                Log.d("collision", "dino is dead ");
                 return true;
             }
         }
@@ -125,6 +144,16 @@ public class Obstacle {
         obj.x = m_ix;
         obj.y = y;
         cactusImageSet.add(obj);
+    }
+
+    public void resume() {
+        cactusImageSet = new ArrayList<CactusImage>();
+        addObstacle(firstX);
+        for(int i=0; i<3; i++) {
+            x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 450) + 1) + 450);;
+            addObstacle(x);
+        }
+
     }
 
 }

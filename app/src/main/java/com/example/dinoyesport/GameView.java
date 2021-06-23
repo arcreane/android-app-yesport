@@ -1,13 +1,16 @@
 package com.example.dinoyesport;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public MainThread thread;
-    private boolean gameStarted;
+    private boolean gameStarted = false;
+    private boolean gameOver = false;
+    private float score;
+    private float highScore;
     public Dino dino;
     public Map ground;
     public Sun sun;
@@ -31,7 +34,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        gameStarted = false;
+        score = 00000;
+        highScore = 00000;
         bitmapBank = new BitmapBank(this.mainActivity);
         dino = new Dino(bitmapBank, this.mainActivity);
         ground = new Map(bitmapBank, this.mainActivity);
@@ -58,13 +62,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public boolean update() {
+        if(gameStarted)
+        this.score += 1;
+
         this.dino.update();
         this.ground.update();
         this.sun.update();
         this.obstacle.update();
         if(this.obstacle.hasCollided()){
+            if(!gameOver)
+                mainActivity.playDeath();
             this.dino.set_isDead(true);
-
+            gameOver = true;
+            gameStarted = false;
         }
         return true;
     }
@@ -77,8 +87,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return gameStarted;
     }
 
+    public int getScore() {
+        return (int) score;
+    }
+
+    public int getHighScore() {
+        return (int) highScore;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+
+    public void reset() {
+        if(highScore < score)
+        highScore = score;
+        score = 00000;
+        obstacle.resume();
+        gameOver = false;
+        this.dino.set_isDead(false);
+        this.mainActivity.resetSpeed();
     }
 
 
@@ -89,5 +121,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         ground.draw(canvas);
         sun.draw(canvas);
         obstacle.draw(canvas);
+
     }
 }
