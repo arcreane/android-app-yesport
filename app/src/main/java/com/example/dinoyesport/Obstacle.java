@@ -2,9 +2,13 @@ package com.example.dinoyesport;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
+
 /**
  * 
  */
@@ -19,9 +23,20 @@ public class Obstacle {
     private class CactusImage {
         Bitmap image;
         float x;
-    }
-    private int random_obstacle;
+        float y;
 
+        Rect getObstacle() {
+            Rect obstacle = new Rect();
+            obstacle.top = (int) y;
+            obstacle.bottom = (int) y + image.getHeight();
+            obstacle.left = (int) x;
+            obstacle.right = (int) x + image.getHeight();
+
+            return obstacle;
+        }
+    }
+    private int randomObstacle;
+    private float firstX;
     private int obstacleInterval;
     private int movementSpeed;
 
@@ -33,25 +48,18 @@ public class Obstacle {
     public Obstacle(BitmapBank bitmapBank, MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.bitmapBank = bitmapBank;
-
-
         cactusImageSet = new ArrayList<CactusImage>();
+        firstX = this.mainActivity.getCurrent_screen().getWidth() + (new Random().nextInt((800 - 600) + 1) + 600);
+        addObstacle(firstX);
         for(int i=0; i<3; i++) {
-            random_obstacle = (int) (Math.random()*5);
-            image = this.bitmapBank.getObstacleSprite(random_obstacle);
-            if (image.getHeight() == 105) y = 730;
-            else y = 700;
-            x = this.mainActivity.getCurrent_screen().getWidth();
-            CactusImage obj = new CactusImage();
-            obj.image = image;
-            obj.x = x;
-            cactusImageSet.add(obj);
+            x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 450) + 1) + 450);;
+            addObstacle(x);
         }
     }
 
     public void draw(Canvas canvas) {
         for(CactusImage img : cactusImageSet) {
-            canvas.drawBitmap(img.image,img.x, y, null);
+            canvas.drawBitmap(img.image,img.x, img.y, null);
         }
     }
 
@@ -64,36 +72,59 @@ public class Obstacle {
 
             while (looper.hasNext()) {
                 CactusImage cactusImage = looper.next();
-                cactusImage.x -= movementSpeed;
+                cactusImage.x -= this.mainActivity.getGameSpeed();
             }
 
-            if (CactusImage.x < -CactusImage.image.getWidth()) {
-                cactusImageSet.remove(CactusImage);
-                CactusImage.x = cactusImageSet.get(cactusImageSet.size() - 1).x;
-                cactusImageSet.add(CactusImage);
+            removeObstacle(CactusImage);
+            if (cactusImageSet.size() < 4) {
+                x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 450) + 1) + 450);
+                addObstacle(x);
             }
+
+
         }
     }
 
 
+
     /**
      * 
      */
-    public int numberOfObstacle;
+    public boolean hasCollided() {
+        for(CactusImage ob : cactusImageSet) {
+            if(Dino.getDino().intersect(ob.getObstacle())) {
+                Log.d("collision", "dino is dead ");
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     /**
      * 
      */
-    public void removeObstacle() {
-        // TODO implement here
+    public void removeObstacle(CactusImage m_cactusImage) {
+        if (m_cactusImage.x < -m_cactusImage.image.getWidth()) {
+            cactusImageSet.remove(m_cactusImage);
+        }
     }
 
     /**
      * 
      */
-    public void addObstacle() {
-        // TODO implement here
+    public void addObstacle(float m_ix) {
+        randomObstacle = (int) (Math.random()*5);
+        image = this.bitmapBank.getObstacleSprite(randomObstacle);
+        if (image.getHeight() == 105)
+            y = 730;
+        else
+            y = 690;
+        CactusImage obj = new CactusImage();
+        obj.image = image;
+        obj.x = m_ix;
+        obj.y = y;
+        cactusImageSet.add(obj);
     }
 
 }

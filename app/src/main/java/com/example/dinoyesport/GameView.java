@@ -37,7 +37,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         ground = new Map(bitmapBank, this.mainActivity);
         sun = new Sun(bitmapBank, this.mainActivity);
         obstacle = new Obstacle(bitmapBank, this.mainActivity);
-        gameStarted = false;
 
 
         thread.setRunning(true);
@@ -63,6 +62,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.ground.update();
         this.sun.update();
         this.obstacle.update();
+        if(this.obstacle.hasCollided()){
+            this.dino.set_isDead(true);
+
+        }
         return true;
     }
 

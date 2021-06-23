@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor gyroscopeSensor;
     private SensorEventListener gyroscopeEventListener;
-    private int gameSpeed = 10;
+    private int gameSpeed = Commons.GAME_SPEED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +41,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.values[2] > 1.5f)
-                gameSpeed = 9;
+                gameSpeed = Commons.GAME_SPEED;
                 if (event.values[2] < -1.5f)
-                gameSpeed = 20;
-
+                gameSpeed = Commons.MAX_GAME_SPEED;
             }
 
             @Override
@@ -63,22 +62,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(current_gameView);
         current_screen = getWindowManager().getDefaultDisplay();
 
-        current_gameView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // PRESSED
-                        Log.d("pressed", "yes");
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // RELEASED
-                        Log.d("pressed", "no");
-                        break;
-                }
-                return true;
-            }
-        });
 
     }
     public Display getCurrent_screen() { return this.current_screen; }
