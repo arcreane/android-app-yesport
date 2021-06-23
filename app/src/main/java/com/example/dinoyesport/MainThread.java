@@ -47,6 +47,9 @@ public class MainThread extends Thread {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch(event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
+                            if (gameView.get_GameStarted() == false)
+                                gameView.setGameStarted(true);
+
                              if (gameView.getDino().getM_iYVelocity()< Commons.DINO_MAX_VERTICAL_VELOCITY) {
                                 gameView.getDino().setM_iYVelocity(gameView.getDino().getM_iYVelocity()+Commons.DINO_MAX_VERTICAL_VELOCITY);
                              }

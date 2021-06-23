@@ -7,10 +7,10 @@ import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public MainThread thread;
+    private boolean gameStarted;
     public Dino dino;
     public Map ground;
     public Sun sun;
-    private boolean gameStarted;
     public Obstacle obstacle;
     BitmapBank bitmapBank;
     MainActivity mainActivity;
@@ -37,6 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         ground = new Map(bitmapBank, this.mainActivity);
         sun = new Sun(bitmapBank, this.mainActivity);
         obstacle = new Obstacle(bitmapBank, this.mainActivity);
+        gameStarted = false;
 
 
         thread.setRunning(true);
@@ -60,6 +61,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean update() {
         this.dino.update();
         this.ground.update();
+        this.sun.update();
         return true;
     }
 
@@ -74,6 +76,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }
+
 
     @Override
     public void draw(Canvas canvas){

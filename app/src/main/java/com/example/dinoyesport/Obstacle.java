@@ -31,7 +31,6 @@ public class Obstacle {
     public Obstacle(BitmapBank bitmapBank, MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.bitmapBank = bitmapBank;
-
         random_obstacle = (int) (Math.random()*5);
         image = this.bitmapBank.getObstacleSprite(random_obstacle);
         if (image.getHeight() == 105) y = 730;
