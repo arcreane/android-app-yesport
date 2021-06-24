@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-
+import android.content.SharedPreferences;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Sensor gyroscopeSensor;
     private SensorEventListener gyroscopeEventListener;
     private int gameSpeed = Commons.GAME_SPEED;
+    private float highScore;
     MediaPlayer jumpSound;
     MediaPlayer deathSound;
 
@@ -36,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        SharedPreferences highScoreSaved = getPreferences(MODE_PRIVATE);
+        float saved = highScoreSaved.getFloat("highScore", 00000);
 
+        highScore = (saved == 0 ? 0 : saved);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         jumpSound = MediaPlayer.create(this, R.raw.dinojump);
@@ -99,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void playJump() {
         jumpSound.start();
+    }
+
+    public float getHighScore() {
+        return highScore;
     }
 
     public void playDeath() {

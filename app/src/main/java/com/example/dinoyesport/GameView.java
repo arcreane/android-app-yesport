@@ -1,5 +1,6 @@
 package com.example.dinoyesport;
 
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,6 +18,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Obstacle obstacle;
     BitmapBank bitmapBank;
     MainActivity mainActivity;
+    SharedPreferences.Editor prefsEditor;
 
     public GameView(MainActivity mainActivity) {
         super(mainActivity);
@@ -35,7 +37,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         score = 00000;
-        highScore = 00000;
+        highScore = this.mainActivity.getHighScore();
+        SharedPreferences mPrefs = this.mainActivity.getPreferences(this.mainActivity.MODE_PRIVATE);
+        prefsEditor = mPrefs.edit();
+
         bitmapBank = new BitmapBank(this.mainActivity);
         dino = new Dino(bitmapBank, this.mainActivity);
         ground = new Map(bitmapBank, this.mainActivity);
@@ -104,8 +109,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reset() {
-        if(highScore < score)
-        highScore = score;
+        if(highScore < score){
+            highScore = score;
+            prefsEditor.putFloat("highScore", highScore);
+            prefsEditor.apply();
+        }
+
         score = 00000;
         obstacle.resume();
         gameOver = false;

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -96,12 +97,15 @@ public class Obstacle {
             }
 
             removeObstacle(CactusImage);
-            if (cactusImageSet.size() < 4) {
+            if (cactusImageSet.size() < 8 && this.mainActivity.getGameSpeed() == Commons.GAME_SPEED) {
                 x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 450) + 1) + 450);
                 addObstacle(x);
             }
 
-
+            if (cactusImageSet.size() < 4 && this.mainActivity.getGameSpeed() == Commons.MAX_GAME_SPEED) {
+                x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 550) + 1) + 550);
+                addObstacle(x);
+            }
         }
     }
 
@@ -118,8 +122,6 @@ public class Obstacle {
         }
         return false;
     }
-
-
     /**
      * 
      */
