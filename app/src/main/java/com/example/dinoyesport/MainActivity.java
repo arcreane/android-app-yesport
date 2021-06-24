@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         SharedPreferences highScoreSaved = getPreferences(MODE_PRIVATE);
         float saved = highScoreSaved.getFloat("highScore", 00000);
-
+        hideNavigationBar();
         highScore = (saved == 0 ? 0 : saved);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -94,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(gyroscopeEventListener);
+
+    }
+
+    private void hideNavigationBar() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
     }
 
