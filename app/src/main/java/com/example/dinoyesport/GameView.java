@@ -22,7 +22,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Obstacle obstacle;
     BitmapBank bitmapBank;
     MainActivity mainActivity;
-    SharedPreferences.Editor prefsEditor;
+    SharedPreferences.Editor scoreEdition;
     private MainThread Thread = null;
     private SurfaceHolder holder;
     private boolean isPaused = false;
@@ -44,11 +44,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        score = 00000;
+        score = 0;
 
         highScore = this.mainActivity.getHighScore();
         SharedPreferences mPrefs = this.mainActivity.getPreferences(this.mainActivity.MODE_PRIVATE);
-        prefsEditor = mPrefs.edit();
+        scoreEdition = mPrefs.edit();
 
         bitmapBank = new BitmapBank(this.mainActivity);
         dino = new Dino(bitmapBank, this.mainActivity);
@@ -87,13 +87,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if(mainActivity.getGameSpeed() == 15)
             this.score += 1;
             else this.score += 3;
-        if(score == 1000) {
+        if(this.score > 1000 && this.score < 1005) {
             checkpoint = score;
             mainActivity.playCheckpoint();
+            Log.d("score", String.valueOf(checkpoint));
         }
-        if(score - checkpoint == 1000){
-            checkpoint = score;
+        if(score > 1000 && (this.score - checkpoint) >= 990 && (this.score - checkpoint) <= 1005){
             mainActivity.playCheckpoint();
+            checkpoint = score;
+
+            Log.d("score", String.valueOf(checkpoint));
         }
         this.dino.update();
         this.ground.update();
@@ -107,8 +110,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gameStarted = false;
             if(highScore < score){
                 highScore = score;
-                prefsEditor.putFloat("highScore", highScore);
-                prefsEditor.apply();
+                scoreEdition.putFloat("highScore", highScore);
+                scoreEdition.apply();
             }
         }
         return true;
@@ -171,7 +174,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reset() {
-
+        checkpoint = 00000;
         score = 00000;
         obstacle.resume();
         gameOver = false;
