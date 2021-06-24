@@ -9,6 +9,9 @@ public interface Commons {
 
     // Jump information
     float DINO_MAX_JUMP_TIME= 2.0f * MAX_FPS;
-    float DINO_JUMP_SPEED = 0.15f * MAX_FPS;
+    float DINO_JUMP_SPEED = 0.12f * MAX_FPS;
     float DINO_MAX_VERTICAL_VELOCITY = 5.0f;
+
+    int GAME_SPEED = 15;
+    int MAX_GAME_SPEED = 25;
 }

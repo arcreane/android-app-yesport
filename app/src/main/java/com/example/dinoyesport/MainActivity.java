@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -16,6 +17,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -24,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor gyroscopeSensor;
     private SensorEventListener gyroscopeEventListener;
-    private int gameSpeed = 10;
+    private int gameSpeed = Commons.GAME_SPEED;
+    MediaPlayer jumpSound;
+    MediaPlayer deathSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        jumpSound = MediaPlayer.create(this, R.raw.dinojump);
+        deathSound = MediaPlayer.create(this, R.raw.dinodeath);
 
         if (gyroscopeSensor == null) Toast.makeText(this, "this device have no gyroscope", Toast.LENGTH_LONG).show();
 
@@ -41,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.values[2] > 1.5f)
-                gameSpeed = 9;
+                gameSpeed = Commons.GAME_SPEED;
                 if (event.values[2] < -1.5f)
-                gameSpeed = 20;
-
+                gameSpeed = Commons.MAX_GAME_SPEED;
             }
 
             @Override
@@ -62,23 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(current_gameView);
         current_screen = getWindowManager().getDefaultDisplay();
-
-        current_gameView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // PRESSED
-                        Log.d("pressed", "yes");
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // RELEASED
-                        Log.d("pressed", "no");
-                        break;
-                }
-                return true;
-            }
-        });
+        Toast.makeText(this, "Tap to start !", Toast.LENGTH_SHORT).show();
 
     }
     public Display getCurrent_screen() { return this.current_screen; }
@@ -91,11 +81,31 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.registerListener(gyroscopeEventListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(gyroscopeEventListener);
 
+    }
+
+    public void restart() {
+        recreate();
+    }
+
+    public void playJump() {
+        jumpSound.start();
+    }
+
+    public void playDeath() {
+        deathSound.start();
+    }
+
+    public void resetSpeed() {
+        gameSpeed = Commons.GAME_SPEED;
     }
 }

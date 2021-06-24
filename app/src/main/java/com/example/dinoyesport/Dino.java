@@ -2,7 +2,10 @@ package com.example.dinoyesport;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.Log;
+
+import androidx.constraintlayout.solver.widgets.Rectangle;
 
 /**
  * 
@@ -13,9 +16,10 @@ public class Dino {
     /**
      * Default constructor
      */
-    Bitmap image;
+    static Bitmap image;
     BitmapBank bitmapBank;
-    float y ;
+    static float y ;
+    static float x;
     private boolean isDead;
     private boolean running;
     private boolean jumping;
@@ -26,6 +30,7 @@ public class Dino {
     public Dino(BitmapBank bitmapBank, MainActivity mainActivity) {
         isDead = false;
         m_iFrameNb= 0;
+        x = 20;
         this.mainActivity = mainActivity;
         this.bitmapBank = bitmapBank;
         running = false;
@@ -33,12 +38,23 @@ public class Dino {
         y = 700;
     }
 
+    public static Rect getDino() {
+        Rect dino = new Rect();
+        dino.top = (int) y;
+        dino.bottom = (int) y + image.getHeight();
+        dino.left = (int) x;
+        dino.right = (int) x + image.getWidth();
+
+        return dino;
+    }
+
+
     /**
      *
      * @param canvas
      */
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(image, 20, y, null);
+        canvas.drawBitmap(image, x, y, null);
     }
     
     public void update() {
@@ -71,8 +87,8 @@ public class Dino {
 
         if(running){
             image = this.bitmapBank.getFrame(DinoSprites.RUNNING, (int)Math.floor(m_iFrameNb / 6));
-            Log.d("framerate",String.valueOf((int)Math.floor(m_iFrameNb / 6)));
-            Log.d("framerate",String.valueOf(m_iFrameNb));
+//            Log.d("framerate",String.valueOf((int)Math.floor(m_iFrameNb / 6)));
+//            Log.d("framerate",String.valueOf(m_iFrameNb));
             if(this.m_iFrameNb<8){
                 this.m_iFrameNb+=1;
             }
@@ -83,6 +99,14 @@ public class Dino {
         else {
             this.m_iFrameNb = 0;
             image = this.bitmapBank.getFrame(DinoSprites.STANDING, this.m_iFrameNb);
+        }
+
+        if(isDead){
+            this.m_iFrameNb = 0;
+            this.jumping = false;
+            this.running = false;
+            image = this.bitmapBank.getFrame(DinoSprites.DEAD, this.m_iFrameNb);
+
         }
     }
 
