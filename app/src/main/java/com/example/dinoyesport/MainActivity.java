@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private float highScore;
     MediaPlayer jumpSound;
     MediaPlayer deathSound;
+    MediaPlayer scoreCheckpoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         jumpSound = MediaPlayer.create(this, R.raw.dinojump);
         deathSound = MediaPlayer.create(this, R.raw.dinodeath);
+        scoreCheckpoint = MediaPlayer.create(this, R.raw.scorecheckpoint);
 
         if (gyroscopeSensor == null) Toast.makeText(this, "this device have no gyroscope", Toast.LENGTH_LONG).show();
 
@@ -120,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void playDeath() {
         deathSound.start();
+    }
+
+    public void playCheckpoint() {
+        scoreCheckpoint.start();
     }
 
 

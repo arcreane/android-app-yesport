@@ -103,7 +103,7 @@ public class Obstacle {
             }
 
             if (cactusImageSet.size() < 4 && this.mainActivity.getGameSpeed() == Commons.MAX_GAME_SPEED) {
-                x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 550) + 1) + 550);
+                x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 750) + 1) + 750);
                 addObstacle(x);
             }
         }

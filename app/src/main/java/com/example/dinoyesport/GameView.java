@@ -14,6 +14,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean gameStarted = false;
     private boolean gameOver = false;
     private float score;
+    private float checkpoint;
     private float highScore;
     public Dino dino;
     public Map ground;
@@ -83,8 +84,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public boolean update() {
         if(gameStarted)
-        this.score += 1;
-
+            if(mainActivity.getGameSpeed() == 15)
+            this.score += 1;
+            else this.score += 3;
+        if(score == 1000) {
+            checkpoint = score;
+            mainActivity.playCheckpoint();
+        }
+        if(score - checkpoint == 1000){
+            checkpoint = score;
+            mainActivity.playCheckpoint();
+        }
         this.dino.update();
         this.ground.update();
         this.sun.update();
@@ -95,6 +105,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             this.dino.set_isDead(true);
             gameOver = true;
             gameStarted = false;
+            if(highScore < score){
+                highScore = score;
+                prefsEditor.putFloat("highScore", highScore);
+                prefsEditor.apply();
+            }
         }
         return true;
     }
@@ -156,11 +171,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reset() {
-        if(highScore < score){
-            highScore = score;
-            prefsEditor.putFloat("highScore", highScore);
-            prefsEditor.apply();
-        }
 
         score = 00000;
         obstacle.resume();
