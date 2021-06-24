@@ -52,10 +52,10 @@ public class Obstacle {
         this.mainActivity = mainActivity;
         this.bitmapBank = bitmapBank;
         cactusImageSet = new ArrayList<CactusImage>();
-        firstX = this.mainActivity.getCurrent_screen().getWidth() + (new Random().nextInt((800 - 600) + 1) + 600);
+        firstX = this.mainActivity.getCurrent_screen().getWidth() + (new Random().nextInt((1500 - 800) + 1) + 800);
         addObstacle(firstX);
         for(int i=0; i<3; i++) {
-            x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 450) + 1) + 450);;
+            x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 550) + 1) + 550);;
             addObstacle(x);
         }
     }
@@ -98,7 +98,7 @@ public class Obstacle {
 
             removeObstacle(CactusImage);
             if (cactusImageSet.size() < 8 && this.mainActivity.getGameSpeed() == Commons.GAME_SPEED) {
-                x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((3000 - 450) + 1) + 450);
+                x = cactusImageSet.get(cactusImageSet.size()-1).x + (new Random().nextInt((2000 - 550) + 1) + 550);
                 addObstacle(x);
             }
 

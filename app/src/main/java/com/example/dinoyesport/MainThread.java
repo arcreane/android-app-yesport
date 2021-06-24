@@ -17,6 +17,8 @@ public class MainThread extends Thread {
     private final static int MAX_FRAME_SKIPS = 1;
     // the frame period
     private final static int FRAME_PERIOD = 1000 / MAX_FPS;
+    private Object mPauseLock;
+    private boolean mPaused;
 
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView, MainActivity mainActivity) {
 
@@ -24,7 +26,24 @@ public class MainThread extends Thread {
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
         this.mainActivity = mainActivity;
+        mPauseLock = new Object();
+        mPaused = false;
+    }
 
+    public void onPause() {
+        synchronized (mPauseLock) {
+            mPaused = true;
+        }
+    }
+
+    /**
+     * resume thread.
+     */
+    public void onResume() {
+        synchronized (mPauseLock) {
+            mPaused = false;
+            mPauseLock.notifyAll();
+        }
     }
 
     @Override
@@ -70,8 +89,11 @@ public class MainThread extends Thread {
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized(surfaceHolder) {
-                    this.gameView.update();
-                    this.gameView.draw(canvas);
+                    if(mPaused == false)
+                    {
+                        gameView.update();
+                        gameView.draw(canvas);
+                    }
                 }
             } catch (Exception e) {} finally {
                 if (canvas != null) {

@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(gyroscopeEventListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_GAME);
+        current_gameView.onResume();
     }
 
     @Override
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(gyroscopeEventListener);
+        current_gameView.onPause();
 
     }
 
@@ -120,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
         deathSound.start();
     }
 
+
+    // ===========================================================
+    // onStop
+    // ===========================================================
+
+    protected void onStop() {
+        super.onStop();
+    }
     public void resetSpeed() {
         gameSpeed = Commons.GAME_SPEED;
     }

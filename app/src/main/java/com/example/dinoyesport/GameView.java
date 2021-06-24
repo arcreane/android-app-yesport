@@ -2,6 +2,9 @@ package com.example.dinoyesport;
 
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+
+import android.os.Handler;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
@@ -19,9 +22,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     BitmapBank bitmapBank;
     MainActivity mainActivity;
     SharedPreferences.Editor prefsEditor;
+    private MainThread Thread = null;
+    private SurfaceHolder holder;
+    private boolean isPaused = false;
 
     public GameView(MainActivity mainActivity) {
         super(mainActivity);
+        holder = getHolder();
 
         this.mainActivity = mainActivity;
         getHolder().addCallback(this);
@@ -37,6 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         score = 00000;
+
         highScore = this.mainActivity.getHighScore();
         SharedPreferences mPrefs = this.mainActivity.getPreferences(this.mainActivity.MODE_PRIVATE);
         prefsEditor = mPrefs.edit();
@@ -47,9 +55,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         sun = new Sun(bitmapBank, this.mainActivity);
         obstacle = new Obstacle(bitmapBank, this.mainActivity);
 
+        if(isPaused) {
+            onResume();
+            if(!gameOver)
+                dino.set_Running(true);
+        }
+        else {
+            thread.setRunning(true);
+            thread.start();
+        }
 
-        thread.setRunning(true);
-        thread.start();
     }
 
     @Override
@@ -84,6 +99,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
+
+    /**
+     * Pauses the physics update & animation.
+     */
+    public void onPause() {
+        synchronized (holder)
+        {
+            if(isPaused == false)
+            {
+                isPaused = true;
+                gameStarted = false;
+                thread.onPause();
+            }
+        }
+    }
+
+    public void onResume()
+    {
+        synchronized (holder)
+        {
+            if(isPaused == true)
+            {
+                if(!thread.isAlive())
+                {
+                    thread = new MainThread(holder, this, this.mainActivity);
+                }
+                thread.onResume();
+                isPaused = false;
+            }
+        }
+    }
     public Dino getDino() {
         return this.dino;
     }
@@ -91,6 +137,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean get_GameStarted() {
         return gameStarted;
     }
+
 
     public int getScore() {
         return (int) score;
